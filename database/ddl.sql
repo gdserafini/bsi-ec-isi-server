@@ -1,10 +1,11 @@
+DROP DATABASE IF EXISTS green_path_db;
 CREATE DATABASE green_path_db
 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 USE green_path_db;
 
 CREATE TABLE LocalDescarte (
-    id INT PRIMARY KEY NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     endereco VARCHAR(255) NOT NULL,
     nome VARCHAR(50) NOT NULL,
     referencia VARCHAR(100) NOT NULL,
@@ -13,9 +14,9 @@ CREATE TABLE LocalDescarte (
 );
 
 CREATE TABLE Empresa (
-    id INT PRIMARY KEY NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nome_fantasia VARCHAR(100) NOT NULL,
-    avatar VARCHAR(255),
+    avatar MEDIUMBLOB DEFAULT NULL,
     cnpj VARCHAR(14) NOT NULL,
     razao_social VARCHAR(100) NOT NULL,
     fk_Usuario_id INT,
@@ -26,7 +27,7 @@ CREATE TABLE Empresa (
 );
 
 CREATE TABLE Residuo (
-    id INT PRIMARY KEY NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nome VARCHAR(100) NOT NULL,
     peso DECIMAL NOT NULL,
     quantidade INT NOT NULL,
@@ -38,12 +39,13 @@ CREATE TABLE Residuo (
 );
 
 CREATE TABLE Usuario (
-    id INT PRIMARY KEY NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
+	cpf VARCHAR(100) NOT NULL,
+    telefone VARCHAR(100) NOT NULL,
     senha VARCHAR(100) NOT NULL,
-    data_nascimento DATE NOT NULL,
-    avatar VARCHAR(255),
+    avatar MEDIUMBLOB DEFAULT NULL,
     fk_TipoUsuario_id INT,
     UNIQUE (id, nome, email),
     CONSTRAINT check_email CHECK(
@@ -52,7 +54,7 @@ CREATE TABLE Usuario (
 );
 
 CREATE TABLE TipoUsuario (
-    id INT PRIMARY KEY NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nome_tipo VARCHAR(100) NOT NULL,
     nivel INT NOT NULL,
     UNIQUE (id, nome_tipo),
@@ -61,8 +63,13 @@ CREATE TABLE TipoUsuario (
     )
 );
 
+INSERT INTO `TipoUsuario` (`id`, `nome_tipo`, `nivel`) VALUES
+(1, 'Administrador', 1),
+(2, 'Usuário', 2),
+(3, 'Empresa', 3);
+
 CREATE TABLE ContatoEmpresa (
-    id INT PRIMARY KEY NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     ddd VARCHAR(3) NOT NULL,
     numero VARCHAR(9) NOT NULL,
     ramal VARCHAR(4) NOT NULL,
@@ -72,7 +79,7 @@ CREATE TABLE ContatoEmpresa (
 );
 
 CREATE TABLE Telefone (
-    id INT PRIMARY KEY NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     ddd VARCHAR(3) NOT NULL,
     numero VARCHAR(9) NOT NULL,
     fk_Usuario_id INT,
@@ -82,20 +89,20 @@ CREATE TABLE Telefone (
 );
 
 CREATE TABLE SetorEmpresa (
-    id INT PRIMARY KEY NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nome_setor VARCHAR(100) NOT NULL,
     UNIQUE (id, nome_setor)
 );
 
 CREATE TABLE TipoResiduo (
-    id INT PRIMARY KEY NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nome_tipo VARCHAR(100) NOT NULL,
     classificacao VARCHAR(100) NOT NULL,
     UNIQUE (id, nome_tipo)
 );
 
 CREATE TABLE TipoLocal (
-    id INT PRIMARY KEY NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nome_tipo VARCHAR(100) NOT NULL,
     UNIQUE (nome_tipo, id)
 );
